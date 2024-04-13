@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "BreakingNews";
+    font-style: normal;
+    font-weight: 100;
+    src: url("./BreakingNews.ttf") format("woff");
+  }
+
+  *{
+    font-family: ""
+  }
