@@ -18,6 +18,10 @@ const NewsListBlock = styled.div`
         padding-right: 1rem;
     }
 `;
+const RecentNews = styled.div`
+    width: 768px;
+    margin: 0 auto;
+`;
 const MenuArea = styled.div`
     width:100%;
     height:50px;
@@ -57,6 +61,10 @@ const NewsList= ({category}) => {
     return (
       <>
       <MenuArea/>
+      <RecentNews>
+      <h2><br/> 최신기사</h2>
+      </RecentNews>
+      
       <NewsListBlock>
         {articles.map((article) => (
           <p><NewsItem key={article.url} article={article} /> <hr/></p>
