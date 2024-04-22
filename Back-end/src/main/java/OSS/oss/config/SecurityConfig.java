@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
+    // 비밀번호 암호화
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
         return new BCryptPasswordEncoder();
@@ -28,11 +29,12 @@ public class SecurityConfig {
         //http basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
+
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/login", "/**", "/resister").permitAll() // login, /, resister 경로는 누구나 접근 가능
+                        //.requestMatchers("/admin").hasRole("ADMIN") // ADMIN 권한이 있어야 접근 가능
                         .anyRequest().authenticated());
         //세션 설정 -> 가장 중요
         http
