@@ -19,6 +19,7 @@ public class ResisterService {
         String password = resisterDTO.getPassword();
         String major = resisterDTO.getMajor();
         String category = resisterDTO.getCategory();
+
         Boolean isExist = userRepository.existsById(id); // 아이디 중복 확인
         if (isExist) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
@@ -29,7 +30,7 @@ public class ResisterService {
         data.setPassword(bCryptPasswordEncoder.encode(password)); // 비밀번호 암호화
         data.setMajor(major);
         data.setCategory(category);
-        //data.setRole("ROLE_ADMIN"); // 임시로 ROLE_ADMIN으로 설정
+        data.setRole("ROLE_ADMIN"); // 임시로 ROLE_ADMIN으로 설정
 
         userRepository.save(data);
 

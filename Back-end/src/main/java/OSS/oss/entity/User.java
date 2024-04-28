@@ -15,8 +15,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId; //pk값 이름 테이블명+Id로 통일
 
-    private String id; // 사용자 id = email값
+    private String id; // 사용자 id = email값 --> 나중에 username으로 바꿀지
     private String password;
+
+    private String role;
 
     private String major;
     private String category; // 관심 카테고리
