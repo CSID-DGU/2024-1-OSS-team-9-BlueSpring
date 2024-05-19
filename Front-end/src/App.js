@@ -4,6 +4,7 @@ import NewsList from "./components/NewsList";
 import Menu from "./components/Menu";
 import LoginPage from './components/LoginPage';
 import NewsPage from './components/NewsPage';
+import SearchResultPage from './components/SearchResultPage';
 
 function App() {
   const [category, setCategory] = useState('all');
@@ -20,7 +21,6 @@ function App() {
         } />
         <Route path="/login" element={
           <>
-
             <LoginPage />
           </>
         } />
@@ -30,34 +30,14 @@ function App() {
           <NewsPage />
         </>
         } />
+        <Route path="/searchresultpage" element={
+          <>
+            <Menu category={category} onSelect={onSelect} />
+            <SearchResultPage />
+          </>
+        } />
       </Routes>
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
 }
 
