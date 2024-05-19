@@ -11,16 +11,19 @@ import java.util.Date;
 @Setter
 public class User {
     @Id
+    //id 생성 방식 - AUTO_INCREMENT로 자동으로 생성되게 함
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private int userId; //pk값 이름 테이블명+Id로 통일
 
-    private String id;
+    private String id; // 사용자 id = email값 --> 나중에 username으로 바꿀지
     private String password;
 
+    private String role;
+
     private String major;
-    private String category;
+    private String category; // 관심 카테고리
     private String moi; // 관심 언론사
-    private int fov;
+    private int fov; // 방문 빈도
     @Temporal(TemporalType.TIMESTAMP)
     private Date staytime;
 }

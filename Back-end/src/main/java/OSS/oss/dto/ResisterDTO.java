@@ -10,5 +10,4 @@ public class ResisterDTO {
     private String password;
     private String major;
     private String category;
-
 }

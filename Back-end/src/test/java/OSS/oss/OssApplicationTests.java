@@ -1,5 +1,6 @@
 package OSS.oss;
 
+import OSS.oss.entity.News;
 import OSS.oss.repository.NewsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
