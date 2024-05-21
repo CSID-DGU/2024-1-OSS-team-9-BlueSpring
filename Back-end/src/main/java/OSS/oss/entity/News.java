@@ -99,20 +99,34 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer articleID;
 
-    @Column(length = 200)
+    @Column(length = 200, nullable = false)
     private String title;
+
+    @Column
     private String source;
 
+    @Column
     private String media;
+
+    @Column
     private String category;
+
+    @Column
     private String emotionType;
+
     @Column(columnDefinition = "TEXT")
     private String content;
+
     @Column(columnDefinition = "TEXT")
     private String summary;
+
+    @Column
     private Integer totalLike;
+
+    @Column
     private Integer totalDislike;
 
+    @Column
     private LocalDate publishDate;
 
 }
