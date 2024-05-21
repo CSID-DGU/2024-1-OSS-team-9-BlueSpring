@@ -92,7 +92,7 @@ const NewsList = ({ category, query }) => {
     <Container>
       <NewsListWrapper>
         <MenuArea />
-        <h2>최신기사</h2>
+        <h2>검색 결과</h2>
         <NewsListBlock>
           {articles.length > 0 ? (
             articles.map((article) => (

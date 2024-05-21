@@ -63,17 +63,18 @@ const NewsPageBlock = styled.div`
     &:hover {
       background-color: #e6e6e6;
     }
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.5rem;
+    }
   }
 
   .like-button {
     margin-right: 1rem;
   }
 
-  img {
-    width: 20px;
-    height: 20px;
-    margin-right: 0.5rem;
-  }
+  
 `;
 
 const NewsPage = () => {
