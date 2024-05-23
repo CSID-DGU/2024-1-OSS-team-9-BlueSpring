@@ -13,12 +13,12 @@ import java.util.*;
 public class NewsCrawler {
     public static void main(String[] args) throws UnsupportedEncodingException {
         // ChromeDriver 설정
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "Back-end/drivers/chromedriver.exe");
 
         // 크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
         // 창을 띄우지 않는 옵션
-        options.addArguments("headless");
+        //options.addArguments("headless");
         // 설정한 옵션을 담은 드라이버 객체 생성
         WebDriver driver = new ChromeDriver(options);
 
@@ -37,11 +37,11 @@ public class NewsCrawler {
         // IT/과학 카테고리
         categoryMap.put("https://news.naver.com/section/105", new ITScienceCrawler());
         // 연예 카테고리
-        //categoryMap.put("https://news.naver.com/section/106", new EntertainmentCrawler());
+        categoryMap.put("https://news.naver.com/section/106", new EntertainmentCrawler());
         // 스포츠 카테고리
         //categoryMap.put("https://news.naver.com/section/107", new SportsCrawler());
         // 학교 공지사항 카테고리
-        //categoryMap.put("https://cse.dongguk.edu/article/notice1/list", new NoticeCrawler());
+        categoryMap.put("https://cse.dongguk.edu/article/notice1/list", new NoticeCrawler());
 
         // CSV 파일에 저장할 FileWriter 객체 생성
         try (FileWriter writer = new FileWriter("news_data.csv")) {
@@ -377,23 +377,23 @@ class EntertainmentCrawler implements CategoryCrawler {
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
         // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > h2"));
+        WebElement titleElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_title__ztaL4 > h2"));
         String title = titleElement.getText();
 
         // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#articeBody"));
+        WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
         String content = contentElement.getText();
 
         // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > div.article_info > span > em"));
+        WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
         String date = dateElement.getText();
 
         // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > div.guide_categorization > a > em"));
+        WebElement CategoryElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_categorize_guide__0T6ri > button > em"));
         String Category = CategoryElement.getText();
 
         // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > div.press_logo > a > img"));
+        WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
         String Media = MediaElement.getAttribute("alt");
 
         return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
@@ -415,19 +415,19 @@ class SportsCrawler implements CategoryCrawler {
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
         // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
+        WebElement titleElement = driver.findElement(By.cssSelector("h2.NewsEndMain_article_title__kqEzS"));
         String title = titleElement.getText();
 
         // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#newsEndContents"));
+        WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
         String content = contentElement.getText();
 
         // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#content > div > div.content > div > div.news_headline > div > span"));
+        WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
         String date = dateElement.getText();
 
         // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#pressLogo > a > img"));
+        WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
         String Media = MediaElement.getAttribute("alt");
 
         return new ArticleData("스포츠", title, content, date, driver.getCurrentUrl(), Media);
