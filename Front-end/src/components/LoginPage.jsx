@@ -59,7 +59,7 @@ const LoginPage = () => {
         </li>
       </ul>
 
-      <form action="https://www.naver.com" method="post">
+      <form action="http://localhost:8080/api/resister" method="post">
         <div className="input__block">
           <input type="email" placeholder="이메일" />
         </div>

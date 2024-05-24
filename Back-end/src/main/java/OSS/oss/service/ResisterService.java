@@ -30,7 +30,7 @@ public class ResisterService {
         data.setPassword(bCryptPasswordEncoder.encode(password)); // 비밀번호 암호화
         data.setMajor(major);
         data.setCategory(category);
-        data.setRole("ROLE_ADMIN"); // 임시로 ROLE_ADMIN으로 설정
+        data.setRole("ADMIN"); // 임시로 ROLE_ADMIN으로 설정
 
         userRepository.save(data);
 
