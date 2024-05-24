@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import likeImage from '../images/like.png';
+import dislikeImage from '../images/dislike.png';
 
 const NewsPageBlock = styled.div`
   display: flex;
@@ -61,11 +63,18 @@ const NewsPageBlock = styled.div`
     &:hover {
       background-color: #e6e6e6;
     }
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.5rem;
+    }
   }
 
   .like-button {
     margin-right: 1rem;
   }
+
+  
 `;
 
 const NewsPage = () => {
@@ -105,10 +114,10 @@ const NewsPage = () => {
       </div>
       <div className="like-dislike">
           <button className="like-button" onClick={handleLike}>
-            👍 {likes}
+            <img src={likeImage} alt="like" /> {likes}
           </button>
           <button className="dislike-button" onClick={handleDislike}>
-            👎 {dislikes}
+            <img src={dislikeImage} alt="dislike" /> {dislikes}
           </button>
         </div>
     </NewsPageBlock>

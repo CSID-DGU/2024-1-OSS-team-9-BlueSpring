@@ -38,7 +38,7 @@ const LoginPage = () => {
     <>
     <Mainheader>
         <HeaderLeft onClick={handleTitleClick}>
-            <h2>BlueSpring</h2>
+            <h2>SentiNews</h2>
         </HeaderLeft>
     </Mainheader>
     <div className="container">
@@ -81,4 +81,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-

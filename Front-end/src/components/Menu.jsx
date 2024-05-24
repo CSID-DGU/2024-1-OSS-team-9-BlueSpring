@@ -1,6 +1,6 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Mainheader = styled.div`
     background-color: #13264e;
@@ -11,7 +11,7 @@ const Mainheader = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 0px 50px;
-    top:0;
+    top: 0;
     position: fixed;
 `;
 
@@ -68,8 +68,7 @@ const categories = [
 const CategoriesBlock = styled.div`
     display: flex;
     padding: 1rem;
-    width: 700px;
-
+    width: 1100px;
 `;
 
 const Category = styled.div`
@@ -80,17 +79,18 @@ const Category = styled.div`
     color: inherit;
     padding-bottom: 0.25rem;
 
-    &:hover{
+    &:hover {
         background-color: #495057;
         transition: 0.2s linear;
     }
-    ${(props) => 
+
+    ${(props) =>
         props.activate &&
         css`
             font-weight: 600;
             border-bottom: 2px solid white;
-            color: #22b8cf
-            &:hover{
+            color: #22b8cf;
+            &:hover {
                 color: #3c9db;
             }
         `}
@@ -106,53 +106,70 @@ const UserButton = styled.div`
     text-decoration: none;
     color: inherit;
     padding-bottom: 0.25rem;
-    :hover{
+    :hover {
         background-color: #495057;
         transition: 0.2s linear;
     }
-`
+`;
 
-const Menu = ({onSelect, category}) => {
+const Menu = ({ onSelect, category }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     const handleTitleClick = () => {
         onSelect('all');
         navigate('/');
-      };
-    
-      const handleLoginClick = () => {
-        // 로그인 버튼 클릭 시 LoginPage 컴포넌트로 이동
+    };
+
+    const handleLoginClick = () => {
         navigate('/login');
-      };
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleSearchKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            navigate(`/searchresultpage?query=${searchQuery}`);
+        }
+    };
+
     return (
         <Mainheader>
             <HeaderLeft onClick={handleTitleClick}>
-                <h2>BlueSpring</h2>
+                <h2>SentiNews</h2>
             </HeaderLeft>
             <CategoriesBlock>
-                {categories.map((c) =>(
+                {categories.map((c) => (
                     <Category
                         key={c.name}
                         activate={category === c.name}
-                        onClick={() => { 
+                        onClick={() => {
                             onSelect(c.name);
                             navigate('/');
                         }}
                     >
-                       {c.text}
+                        {c.text}
                     </Category>
-            ))}
+                ))}
             </CategoriesBlock>
             <HeaderRight>
-                <SearchInput type="text" placeholder="검색" />
-                    {isLoggedIn ? (
-                        <UserButton onClick={() => console.log('마이페이지로 이동')}>마이페이지</UserButton>
-                    ) : (
-                        <UserButton onClick={handleLoginClick}>로그인</UserButton>
-                    )}
+                <SearchInput
+                    type="text"
+                    placeholder="검색"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    onKeyPress={handleSearchKeyPress}
+                />
+                {isLoggedIn ? (
+                    <UserButton onClick={() => console.log('마이페이지로 이동')}>마이페이지</UserButton>
+                ) : (
+                    <UserButton onClick={handleLoginClick}>로그인</UserButton>
+                )}
             </HeaderRight>
-    </Mainheader>
+        </Mainheader>
     );
 };
 

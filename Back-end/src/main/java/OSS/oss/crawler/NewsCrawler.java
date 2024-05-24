@@ -6,23 +6,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-
 public class NewsCrawler {
     public static void main(String[] args) throws UnsupportedEncodingException {
         // ChromeDriver 설정
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "Back-end/drivers/chromedriver.exe");
 
         // 크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
-
         // 창을 띄우지 않는 옵션
         //options.addArguments("headless");
-
         // 설정한 옵션을 담은 드라이버 객체 생성
         WebDriver driver = new ChromeDriver(options);
 
@@ -43,37 +39,34 @@ public class NewsCrawler {
         // 연예 카테고리
         categoryMap.put("https://news.naver.com/section/106", new EntertainmentCrawler());
         // 스포츠 카테고리
-        categoryMap.put("https://news.naver.com/section/107", new SportsCrawler());
+        //categoryMap.put("https://news.naver.com/section/107", new SportsCrawler());
         // 학교 공지사항 카테고리
         categoryMap.put("https://cse.dongguk.edu/article/notice1/list", new NoticeCrawler());
 
-        // 파일에 저장할 StringBuilder 객체 생성
-        StringBuilder sb = new StringBuilder();
+        // CSV 파일에 저장할 FileWriter 객체 생성
+        try (FileWriter writer = new FileWriter("news_data.csv")) {
+            // CSV 파일에 헤더 작성
+            writer.append("Category,Title,Content,Date,URL,Media\n");
 
-        // 각 카테고리별로 크롤링 수행
-        for (Map.Entry<String, CategoryCrawler> entry : categoryMap.entrySet()) {
-            String categoryUrl = entry.getKey();
-            CategoryCrawler categoryCrawler = entry.getValue();
+            // 각 카테고리별로 크롤링 수행
+            for (Map.Entry<String, CategoryCrawler> entry : categoryMap.entrySet()) {
+                String categoryUrl = entry.getKey();
+                CategoryCrawler categoryCrawler = entry.getValue();
 
-            driver.get(categoryUrl);
+                driver.get(categoryUrl);
 
-            // 뉴스 기사 링크 수집
-            List<String> articleUrls = categoryCrawler.getArticleUrls(driver);
+                // 뉴스 기사 링크 수집
+                List<String> articleUrls = categoryCrawler.getArticleUrls(driver);
 
-            // 각 기사 페이지 접속 및 정보 수집
-//            for (String articleUrl : articleUrls) {
-            for(int i=0; i<2; i++){ // 테스트용
-                String articleUrl = articleUrls.get(i); // 테스트용
-                driver.get(articleUrl);
-                ArticleData articleData = categoryCrawler.crawlArticle(driver);
-                sb.append(articleData.toString()).append("\n");
+                // 각 기사 페이지 접속 및 정보 수집
+                for (String articleUrl : articleUrls) {
+                    driver.get(articleUrl);
+                    ArticleData articleData = categoryCrawler.crawlArticle(driver);
+                    writer.append(articleData.toCSV()).append("\n");
+                }
             }
-        }
 
-        // 수집한 정보를 TXT 파일로 저장 (실제로는 DB에 저장)
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("news_data.txt"))) {
-            writer.write(sb.toString());
-            System.out.println("데이터가 news_data.txt 파일에 저장되었습니다.");
+            System.out.println("데이터가 news_data.csv 파일에 저장되었습니다.");
         } catch (IOException e) {
             System.out.println("파일 저장 중 오류가 발생했습니다.");
             e.printStackTrace();
@@ -106,15 +99,20 @@ class ArticleData {
         this.media = media;
     }
 
-    @Override
-    public String toString() {
-        return "Category: " + category + "\n" +
-                "Title: " + title + "\n" +
-                "Content: " + content + "\n" +
-                "Date: " + date + "\n" +
-                "URL: " + url + "\n" +
-                "Media: " + media + "\n" +
-                "-----------------------------";
+    public String toCSV() {
+        return category + "," +
+                escapeCSV(title) + "," +
+                escapeCSV(content) + "," +
+                date + "," +
+                url + "," +
+                media;
+    }
+
+    private String escapeCSV(String value) {
+        if (value == null) {
+            return "";
+        }
+        return "\"" + value.replace("\"", "\"\"") + "\"";
     }
 
     // 데이터베이스에 저장
@@ -379,23 +377,23 @@ class EntertainmentCrawler implements CategoryCrawler {
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
         // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > h2"));
+        WebElement titleElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_title__ztaL4 > h2"));
         String title = titleElement.getText();
 
         // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#articeBody"));
+        WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
         String content = contentElement.getText();
 
         // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > div.article_info > span > em"));
+        WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
         String date = dateElement.getText();
 
         // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > div.guide_categorization > a > em"));
+        WebElement CategoryElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_categorize_guide__0T6ri > button > em"));
         String Category = CategoryElement.getText();
 
         // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#content > div.end_ct > div > div.press_logo > a > img"));
+        WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
         String Media = MediaElement.getAttribute("alt");
 
         return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
@@ -417,19 +415,19 @@ class SportsCrawler implements CategoryCrawler {
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
         // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#content > div > div.content > div > div.news_headline > h4"));
+        WebElement titleElement = driver.findElement(By.cssSelector("h2.NewsEndMain_article_title__kqEzS"));
         String title = titleElement.getText();
 
         // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#newsEndContents"));
+        WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
         String content = contentElement.getText();
 
         // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#content > div > div.content > div > div.news_headline > div > span"));
+        WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
         String date = dateElement.getText();
 
         // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#pressLogo > a > img"));
+        WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
         String Media = MediaElement.getAttribute("alt");
 
         return new ArticleData("스포츠", title, content, date, driver.getCurrentUrl(), Media);
