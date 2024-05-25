@@ -7,6 +7,20 @@ import java.time.LocalDate;
 
 @Entity
 public class News {
+
+    public News() {
+        // 기본 생성자
+    }
+
+    public News(String category, String title, String content, String publishDate, String source, String media) {
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.publishDate = LocalDate.parse(publishDate);
+        this.source = source;
+        this.media = media;
+    }
+
     public Integer getArticleID() {
         return articleID;
     }
