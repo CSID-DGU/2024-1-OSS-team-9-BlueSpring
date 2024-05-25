@@ -39,7 +39,7 @@ public class NewsCrawler {
         // 연예 카테고리
         categoryMap.put("https://news.naver.com/section/106", new EntertainmentCrawler());
         // 스포츠 카테고리
-        //categoryMap.put("https://news.naver.com/section/107", new SportsCrawler());
+        categoryMap.put("https://news.naver.com/section/107", new SportsCrawler());
         // 학교 공지사항 카테고리
         categoryMap.put("https://cse.dongguk.edu/article/notice1/list", new NoticeCrawler());
 
@@ -62,7 +62,9 @@ public class NewsCrawler {
                 for (String articleUrl : articleUrls) {
                     driver.get(articleUrl);
                     ArticleData articleData = categoryCrawler.crawlArticle(driver);
-                    writer.append(articleData.toCSV()).append("\n");
+                    if (articleData != null) {
+                        writer.append(articleData.toCSV()).append("\n");
+                    }
                 }
             }
 
@@ -148,27 +150,33 @@ class PoliticsCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try{
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
+            String date = dateElement.getText();
 
-        // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
-        String Category = CategoryElement.getText();
+            // 카테고리 수집
+            WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
+            String Category = CategoryElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
-        String Media = MediaElement.getText();
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
+            String Media = MediaElement.getText();
 
-        return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+            articleData = new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -186,27 +194,33 @@ class EconomyCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
+            String date = dateElement.getText();
 
-        // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
-        String Category = CategoryElement.getText();
+            // 카테고리 수집
+            WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
+            String Category = CategoryElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
-        String Media = MediaElement.getText();
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
+            String Media = MediaElement.getText();
 
-        return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+            articleData = new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -224,27 +238,33 @@ class SocietyCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
+            String date = dateElement.getText();
 
-        // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
-        String Category = CategoryElement.getText();
+            // 카테고리 수집
+            WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
+            String Category = CategoryElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
-        String Media = MediaElement.getText();
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
+            String Media = MediaElement.getText();
 
-        return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+            articleData = new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -262,27 +282,33 @@ class LifeCultureCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
+            String date = dateElement.getText();
 
-        // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
-        String Category = CategoryElement.getText();
+            // 카테고리 수집
+            WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
+            String Category = CategoryElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
-        String Media = MediaElement.getText();
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
+            String Media = MediaElement.getText();
 
-        return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+            articleData = new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -300,27 +326,33 @@ class WorldCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
+            String date = dateElement.getText();
 
-        // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
-        String Category = CategoryElement.getText();
+            // 카테고리 수집
+            WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
+            String Category = CategoryElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
-        String Media = MediaElement.getText();
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
+            String Media = MediaElement.getText();
 
-        return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+            articleData = new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -338,27 +370,33 @@ class ITScienceCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("#title_area > span"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("#dic_area"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span"));
+            String date = dateElement.getText();
 
-        // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
-        String Category = CategoryElement.getText();
+            // 카테고리 수집
+            WebElement CategoryElement = driver.findElement(By.cssSelector("#contents > div.media_end_categorize > a > em"));
+            String Category = CategoryElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
-        String Media = MediaElement.getText();
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("#contents > div.media_end_linked_more > div > a > em"));
+            String Media = MediaElement.getText();
 
-        return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+            articleData = new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -376,27 +414,33 @@ class EntertainmentCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_title__ztaL4 > h2"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_title__ztaL4 > h2"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
+            String date = dateElement.getText();
 
-        // 카테고리 수집
-        WebElement CategoryElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_categorize_guide__0T6ri > button > em"));
-        String Category = CategoryElement.getText();
+            // 카테고리 수집
+            WebElement CategoryElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_categorize_guide__0T6ri > button > em"));
+            String Category = CategoryElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
-        String Media = MediaElement.getAttribute("alt");
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
+            String Media = MediaElement.getAttribute("alt");
 
-        return new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+            articleData = new ArticleData(Category, title, content, date, driver.getCurrentUrl(), Media);
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -414,23 +458,27 @@ class SportsCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("h2.NewsEndMain_article_title__kqEzS"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("h2.NewsEndMain_article_title__kqEzS"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("div._article_content"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("div.NewsEndMain_article_head_date_info__jGlzH > div:nth-child(1) > em"));
+            String date = dateElement.getText();
 
-        // 언론사 수집
-        WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
-        String Media = MediaElement.getAttribute("alt");
-
-        return new ArticleData("스포츠", title, content, date, driver.getCurrentUrl(), Media);
+            // 언론사 수집
+            WebElement MediaElement = driver.findElement(By.cssSelector("div.NewsEndMain_comp_article_head__Uqd6M > a > img"));
+            String Media = MediaElement.getAttribute("alt");
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
 
@@ -450,18 +498,24 @@ class NoticeCrawler implements CategoryCrawler {
 
     @Override
     public ArticleData crawlArticle(WebDriver driver) {
-        // 기사 제목 수집
-        WebElement titleElement = driver.findElement(By.cssSelector("#contents > div.contents > div > div.tit > p"));
-        String title = titleElement.getText();
+        ArticleData articleData = null;
+        try {
+            // 기사 제목 수집
+            WebElement titleElement = driver.findElement(By.cssSelector("#contents > div.contents > div > div.tit > p"));
+            String title = titleElement.getText();
 
-        // 기사 본문 수집
-        WebElement contentElement = driver.findElement(By.cssSelector("#contents > div.contents > div > div.view_cont"));
-        String content = contentElement.getText();
+            // 기사 본문 수집
+            WebElement contentElement = driver.findElement(By.cssSelector("#contents > div.contents > div > div.view_cont"));
+            String content = contentElement.getText();
 
-        // 기사 발행일자 수집
-        WebElement dateElement = driver.findElement(By.cssSelector("#contents > div.contents > div > div.tit > div > span:nth-child(1)"));
-        String date = dateElement.getText();
+            // 기사 발행일자 수집
+            WebElement dateElement = driver.findElement(By.cssSelector("#contents > div.contents > div > div.tit > div > span:nth-child(1)"));
+            String date = dateElement.getText();
 
-        return new ArticleData("학교 공지사항", title, content, date, driver.getCurrentUrl(), "");
+            articleData = new ArticleData("학교 공지사항", title, content, date, driver.getCurrentUrl(), "");
+        } catch (Exception e) {
+            System.out.println("파싱 오류가 발생했습니다. 해당 기사를 건너뜁니다.");
+        }
+        return articleData;
     }
 }
