@@ -10,7 +10,8 @@ import RealTimeRanking from './components/RealTimeRanking';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <RealTimeRanking />
+    <App />
+      {/*<RealTimeRanking />*/}
   </BrowserRouter>
 );
 

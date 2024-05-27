@@ -77,7 +77,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/api/resister").permitAll() // login, /, resister 경로는 누구나 접근 가능
+                        .requestMatchers("/login", "/", "/api/users/resister").permitAll() // login, /, resister 경로는 누구나 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN") // ADMIN 권한이 있어야 접근 가능
                         .anyRequest().authenticated());
 

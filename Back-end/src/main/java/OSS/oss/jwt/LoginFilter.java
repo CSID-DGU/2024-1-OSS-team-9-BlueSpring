@@ -20,7 +20,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 
         this.setUsernameParameter("id"); //id 파라미터로 받기
-        this.setFilterProcessesUrl("/api/login"); // 로그인 엔드포인트를 /api/login으로 설정
+        this.setFilterProcessesUrl("/api/users/login"); // 로그인 엔드포인트를 /api/login으로 설정
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
