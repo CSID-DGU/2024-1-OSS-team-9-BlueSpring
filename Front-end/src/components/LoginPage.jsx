@@ -59,16 +59,16 @@ const LoginPage = () => {
         </li>
       </ul>
 
-      <form action="http://localhost:8080/api/resister" method="post">
+      <form action={isSignup ? "http://localhost:8080/api/users/resister" : "http://localhost:8080/api/users/login"} method="post">
         <div className="input__block">
-          <input type="email" placeholder="이메일" />
+          <input type="email" name="id" placeholder="이메일" />
         </div>
         <div className="input__block">
-          <input type="password" placeholder="비밀번호" />
+          <input type="password" name="password" placeholder="비밀번호" />
         </div>
         {isSignup && (
           <div className="input__block">
-            <input type="text" placeholder="학과" />
+            <input type="text" name="major" placeholder="학과" />
           </div>
         )}
         <button className="signin__btn">

@@ -53,7 +53,7 @@ public class NewsController {
     }
 
     // 카테고리별 조회 API
-    @GetMapping("/api/news")
+    @GetMapping("/api/news/category")
     public ResponseEntity<Map<String, Object>> getNewsByCategory(
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "page", defaultValue = "0") int page,
