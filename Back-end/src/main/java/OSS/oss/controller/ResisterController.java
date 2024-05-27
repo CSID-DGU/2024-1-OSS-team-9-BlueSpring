@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController //controller+responsebody
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 
 public class ResisterController {
     //주입 받기 위한 객체 변수
