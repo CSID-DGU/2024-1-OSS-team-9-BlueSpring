@@ -5,6 +5,7 @@ import Menu from "./components/Menu";
 import LoginPage from './components/LoginPage';
 import NewsPage from './components/NewsPage';
 import SearchResultPage from './components/SearchResultPage';
+import MyPage from './components/MyPage';
 
 function App() {
   const [category, setCategory] = useState('all');
@@ -22,6 +23,11 @@ function App() {
         <Route path="/login" element={
           <>
             <LoginPage />
+          </>
+        } />
+        <Route path="/mypage" element={
+          <>
+            <MyPage />
           </>
         } />
         <Route path="/newspage" element={
