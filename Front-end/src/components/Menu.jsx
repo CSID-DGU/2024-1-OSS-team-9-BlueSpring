@@ -113,7 +113,7 @@ const UserButton = styled.div`
 `;
 
 const Menu = ({ onSelect, category }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
@@ -125,9 +125,7 @@ const Menu = ({ onSelect, category }) => {
     const handleLoginClick = () => {
         navigate('/login');
     };
-    const handleMypageClick = () => {
-        navigate('/mypage');
-    }
+
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
