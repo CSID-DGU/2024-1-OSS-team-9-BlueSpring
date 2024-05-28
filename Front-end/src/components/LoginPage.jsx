@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import "../style.css";
@@ -63,7 +62,7 @@ const LoginPage = () => {
       // 로그인 상태를 업데이트
       setIsLoggedIn(true);
       // 로그인 성공 후 리다이렉트 -> 마이페이지가 보이는 메인화면
-      //navigate('');
+      navigate('/');
     } else {
       // 에러 처리
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');
@@ -124,7 +123,7 @@ const LoginPage = () => {
 
       <form onSubmit={isSignup ? handleSignupSubmit : handleLoginSubmit}>
         <div className="input__block">
-          <input type="email" name="id" placeholder="이메일" />
+          <input type="text" name="id" placeholder="아이디" />
         </div>
         <div className="input__block">
           <input type="password" name="password" placeholder="비밀번호" />

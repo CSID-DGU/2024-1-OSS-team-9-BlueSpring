@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+//import { isLoggedIn } from "./context";
 
 const Mainheader = styled.div`
     background-color: #13264e;
@@ -113,13 +114,17 @@ const UserButton = styled.div`
 `;
 
 const Menu = ({ onSelect, category }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     const navigate = useNavigate();
 
     const handleTitleClick = () => {
         onSelect('all');
         navigate('/');
+    };
+    const handleMypageClick = () => {
+        navigate('/mypage');
     };
 
     const handleLoginClick = () => {
