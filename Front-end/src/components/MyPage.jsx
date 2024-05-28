@@ -1,7 +1,28 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Menu from './Menu';
 import InterestSettings from './InterestSettings';
+
+
+const Mainheader = styled.div`
+    background-color: #13264e;
+    width: 100%;
+    height: 60px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 50px;
+    top:0;
+    position: fixed;
+`;
+
+
+const HeaderLeft = styled.div`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+`;
 
 const Container = styled.div`
   max-width: 800px;
@@ -11,7 +32,6 @@ const Container = styled.div`
 
 const Title = styled.h1`
   font-size: 32px;
-  font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
 `;
@@ -115,9 +135,19 @@ const MyPage = () => {
     }
   ];
 
+  const navigate = useNavigate();
+  const handleTitleClick = () => {
+    navigate('/');
+  };
+
+
   return (
     <>
-      <Menu />
+      <Mainheader>
+        <HeaderLeft onClick={handleTitleClick}>
+          <h2>SentiNews</h2>
+        </HeaderLeft>
+      </Mainheader>
       <Container>
         <Title>마이페이지</Title>
         <TabContainer>
