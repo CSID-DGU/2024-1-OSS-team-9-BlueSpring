@@ -126,6 +126,10 @@ const Menu = ({ onSelect, category }) => {
         navigate('/login');
     };
 
+    const handleMypageClick = () => {
+        navigate('/mypage');
+    }
+    
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
