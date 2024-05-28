@@ -125,7 +125,9 @@ const Menu = ({ onSelect, category }) => {
     const handleLoginClick = () => {
         navigate('/login');
     };
-
+    const handleMypageClick = () => {
+        navigate('/mypage');
+    }
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
@@ -164,7 +166,7 @@ const Menu = ({ onSelect, category }) => {
                     onKeyPress={handleSearchKeyPress}
                 />
                 {isLoggedIn ? (
-                    <UserButton onClick={() => console.log('마이페이지로 이동')}>마이페이지</UserButton>
+                    <UserButton onClick={handleMypageClick}>마이페이지</UserButton>
                 ) : (
                     <UserButton onClick={handleLoginClick}>로그인</UserButton>
                 )}

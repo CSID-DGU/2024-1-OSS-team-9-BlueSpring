@@ -5,7 +5,7 @@ import Menu from "./components/Menu";
 import LoginPage from './components/LoginPage';
 import NewsPage from './components/NewsPage';
 import SearchResultPage from './components/SearchResultPage';
-
+import MyPage from "./components/MyPage";
 function App() {
   const [category, setCategory] = useState('all');
   const onSelect = useCallback((category) => setCategory(category), []);
@@ -24,6 +24,11 @@ function App() {
             <LoginPage />
           </>
         } />
+          <Route path="/mypage" element={
+              <>
+                  <MyPage />
+              </>
+          } />
         <Route path="/newspage" element={
         <>
           <Menu category={category} onSelect={onSelect} />

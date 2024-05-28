@@ -16,9 +16,12 @@ public class ResisterService {
     }
     public void resisterProcess(ResisterDTO resisterDTO) {
         String id = resisterDTO.getId();
+        // 디버깅 또는 로깅을 통해 id 필드의 값을 확인
+        System.out.println("ID: " + resisterDTO.getId());
+
         String password = resisterDTO.getPassword();
         String major = resisterDTO.getMajor();
-        String category = resisterDTO.getCategory();
+        //String category = resisterDTO.getCategory();
 
         Boolean isExist = userRepository.existsById(id); // 아이디 중복 확인
         if (isExist) {
@@ -29,7 +32,7 @@ public class ResisterService {
         data.setId(id);
         data.setPassword(bCryptPasswordEncoder.encode(password)); // 비밀번호 암호화
         data.setMajor(major);
-        data.setCategory(category);
+        //data.setCategory(category);
         data.setRole("ADMIN"); // 임시로 ROLE_ADMIN으로 설정
 
         userRepository.save(data);
