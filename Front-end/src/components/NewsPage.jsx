@@ -97,12 +97,13 @@ const NewsPage = () => {
       <div className="content">
         <h1 className="title">{article.title}</h1>
         <hr/>
-        <p className="article">{article.description}</p>
         {article.urlToImage && (
         <div className="thumbnail">
           <img src={article.urlToImage} alt="article thumbnail" />
         </div>
-      )}
+        )}
+        <p className="article">{article.description}</p>
+        
       <a
           href={article.url}
           target="_blank"
