@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useAuth } from '../context/AuthContext';
 
 const InterestSettings = () => {
+  const {userId, setUserId} = useAuth();
+  //로그인된 사람의 아이디를 가져옴, 이후 SQL문에서 관심사 정보를 가져올 때 사용 가능
+
   const [interests, setInterests] = useState([
     { id: 1, name: '정치', selected: false },
     { id: 2, name: '경제', selected: false },
@@ -23,23 +27,41 @@ const InterestSettings = () => {
     );
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const selectedInterests = interests.filter(interest => interest.selected);
+    console.log(selectedInterests);
+    //기본 관심사 관리 버튼 클릭 시 로직 추가
+  };
+
   return (
     <Container>
       <Title>내 관심사</Title>
-      <InterestList>
-        {interests.map((interest) => (
-          <InterestItem
-            key={interest.id}
-            selected={interest.selected}
-            onClick={() => handleInterestChange(interest.id)}
-          >
-            {interest.name}
-            {interest.selected && <CheckIcon>✓</CheckIcon>}
-          </InterestItem>
-        ))}
-      </InterestList>
-      <br/>
-      <ManageButton>기본 관심사 관리</ManageButton>
+      <form action= "www.naver.com" onSubmit={handleSubmit}>
+        <InterestList>
+          {interests.map((interest) => (
+            <InterestItem
+              key={interest.id}
+              selected={interest.selected}
+              onClick={() => handleInterestChange(interest.id)}
+            >
+              <input
+                type="checkbox"
+                id={`interest-${interest.id}`}
+                checked={interest.selected}
+                onChange={() => handleInterestChange(interest.id)}
+                style={{ display: 'none' }}
+              />
+              <label htmlFor={`interest-${interest.id}`}>
+                {interest.name}
+                
+              </label>
+            </InterestItem>
+          ))}
+        </InterestList>
+        <br/>
+        <ManageButton type="submit">기본 관심사 관리</ManageButton>
+      </form>
     </Container>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import InterestSettings from './InterestSettings';
-
+import { useAuth } from '../context/AuthContext';
 
 const Mainheader = styled.div`
     background-color: #13264e;
@@ -110,14 +110,26 @@ const MoreButton = styled.button`
 
 const MyPage = () => {
   const [selectedTab, setSelectedTab] = useState('profile');
-  const [email, setEmail] = useState('john@example.com');
-  const [password, setPassword] = useState('');
+  const { userId } = useAuth();
+  //로그인 시 ID는 userID에 저장됨, DB에서 SQL문을 이용해 비밀번호, 학과, 관심사를 가져오고 useState에 넣으면 됨.
+
+  const [id, setId] = useState(userId);
+  const [password, setPassword] = useState('12345678');
+  const [confirmPassword, setConfirmPassword] = useState('12345678');
   const [department, setDepartment] = useState('컴퓨터공학전공');
+  //DB에서 가져온 아이디, 비번, 학과를 useState의 따옴표 사이에 삽입
 
   const handleEditProfile = () => {
-    // 비밀번호와 학과를 변경하는 로직 추가
+    if (password !== confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    //수정한 비밀번호가 일치하지 않으면 무시
+
+    console.log('아이디:', id);
     console.log('비밀번호:', password);
     console.log('학과:', department);
+    //수정하기 버튼 클릭 시 로직 추가
   };
 
   const recentArticles = [
@@ -169,8 +181,9 @@ const MyPage = () => {
           <Box>
             <h2 style={{ fontSize: '24px' }}>프로필</h2>
             <ProfileInfo>
-              <span><Label>이메일:</Label> {email}</span>
+              <span><Label>아이디:</Label> {id}</span>
               <span><Label>비밀번호:</Label> <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /></span>
+              <span><Label>비밀번호 확인:</Label> <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} /></span>
               <span><Label>학과:</Label> <Input type="text" value={department} onChange={(e) => setDepartment(e.target.value)} /></span>
             </ProfileInfo>
             <EditButton onClick={handleEditProfile}>수정하기</EditButton>

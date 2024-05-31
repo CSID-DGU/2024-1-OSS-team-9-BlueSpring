@@ -27,6 +27,7 @@ const LoginPage = () => {
   const [isSignup, setIsSignup] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const {userId, setUserId} = useAuth();
 
   const handleTabClick = (tab) => {
     setIsSignup(tab === 'signup');
@@ -54,6 +55,7 @@ const LoginPage = () => {
       const data = await response.text();
       localStorage.setItem('token', data);
       setIsLoggedIn(true);
+      setUserId(id);
       navigate('/');
     } else {
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');
