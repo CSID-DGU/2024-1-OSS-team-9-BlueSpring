@@ -45,7 +45,7 @@ function NewsItem({article}){
     }
     //구조 분해를 이용해서 article.title → title로 할당하기
     const handleClick = () => {
-        navigate('/newspage', { state: { article } });
+        navigate('/news', { state: { article } });
       };
     return (
         <NewsItemBlock onClick={handleClick}>

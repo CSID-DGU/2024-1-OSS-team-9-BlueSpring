@@ -7,16 +7,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/news")
 public class NewsController {
 
     private final NewsService newsService;
@@ -25,71 +23,21 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    // 기본 추천 뉴스 API
-    @GetMapping("/api/news")
-    public ResponseEntity<Map<String, Object>> getRecommendedNews(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        try {
-            Pageable pageable = PageRequest.of(page, size);
-            Page<News> newsPage = newsService.getRecommendedNews(pageable);
-
-            List<News> news = newsPage.getContent();
-            int totalPages = newsPage.getTotalPages();
-            long totalElements = newsPage.getTotalElements();
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("content", news);
-            response.put("page", page);
-            response.put("size", size);
-            response.put("totalElements", totalElements);
-            response.put("totalPages", totalPages);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    // 카테고리별 조회 API
-    @GetMapping("/api/news/category")
-    public ResponseEntity<Map<String, Object>> getNewsByCategory(
+    // 기본 추천 뉴스 및 카테고리별 조회 API
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> getNews(
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
         try {
             Pageable pageable = PageRequest.of(page, size);
-            Page<News> newsPage = newsService.getNewsByCategory(category, pageable);
-
-            List<News> news = newsPage.getContent();
-            int totalPages = newsPage.getTotalPages();
-            long totalElements = newsPage.getTotalElements();
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("content", news);
-            response.put("page", page);
-            response.put("size", size);
-            response.put("totalElements", totalElements);
-            response.put("totalPages", totalPages);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    // 키워드 검색 API
-    @GetMapping("/api/news/search")
-    public ResponseEntity<Map<String, Object>> searchNews(
-            @RequestParam(value = "keyword") String keyword,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        try {
-            Pageable pageable = PageRequest.of(page, size);
-            Page<News> newsPage = newsService.searchNews(keyword, pageable);
+            Page<News> newsPage;
+            if (category == null || category.isEmpty()) {
+                newsPage = newsService.getRecommendedNews(pageable);
+            } else {
+                newsPage = newsService.getNewsByCategory(category, pageable);
+            }
 
             List<News> news = newsPage.getContent();
             int totalPages = newsPage.getTotalPages();
@@ -109,7 +57,7 @@ public class NewsController {
     }
 
     // 뉴스 본문 조회 API
-    @GetMapping("/api/news/{articleId}")
+    @GetMapping("/{articleId}")
     public ResponseEntity<News> getNewsDetail(@PathVariable Long articleId) {
         try {
             News news = newsService.getNewsDetail(articleId);

@@ -57,13 +57,13 @@ const NewsList = ({ category }) => {
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  useEffect(()   => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const query = category === 'all' ? '' : `&category=${category}`;
         const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=a0ba251738f34defbb9bfe8af6e34866`
+            `/api/news?${query}`  // 백엔드의 /api/news 엔드포인트 호출
         );
         setArticles(response.data.articles);
       } catch (err) {

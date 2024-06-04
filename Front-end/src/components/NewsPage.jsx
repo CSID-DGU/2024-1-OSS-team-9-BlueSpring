@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import likeImage from '../images/like.png';
 import dislikeImage from '../images/dislike.png';
+import axios from "axios";
 
 const NewsPageBlock = styled.div`
   display: flex;
@@ -83,6 +84,18 @@ const NewsPage = () => {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
 
+    useEffect(() => {
+        const fetchArticleDetail = async () => {
+            try {
+                // 백엔드의 /api/news/{articleId} 엔드포인트 호출
+                const response = await axios.get(`api/news/${article.id}`);
+                setArticleDetail(response.data); // 백엔드에서 받은 상세 기사 데이터 설정
+            }catch(error){
+                console.log(error);
+            }
+        };
+        fetchArticleDetail();
+    }, [article.id]);
 
   const handleLike = () => {
     setLikes(likes + 1);
