@@ -53,7 +53,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(id, role, 60*60*1000L); //jwt 생성 시간
+        String token = jwtUtil.createJwt(id, role, 60*60*10000L); //jwt 생성 시간
 
         response.addHeader("Authorization", "Bearer " + token); //http rfc 7235정의에 의해 \
     }
