@@ -89,7 +89,7 @@ const NewsPage = () => {
             try {
                 // 백엔드의 /api/news/{articleId} 엔드포인트 호출
                 const response = await axios.get(`api/news/${article.id}`);
-                setArticleDetail(response.data); // 백엔드에서 받은 상세 기사 데이터 설정
+                //setArticleDetail(response.data); // 백엔드에서 받은 상세 기사 데이터 설정 오류발생
             }catch(error){
                 console.log(error);
             }

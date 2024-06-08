@@ -7,6 +7,7 @@ import OSS.oss.entity.User;
 import OSS.oss.jwt.JWTUtil;
 import OSS.oss.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,11 +36,14 @@ public class UserController {
     }
 
     // 회원정보 수정
-    @PostMapping("/update/{userId}/profile")
+    @PutMapping("/update/{userId}/profile")
     public ResponseEntity<?> updateUserProfile(@PathVariable int userId, @RequestBody ResisterDTO userDTO) { // ResisterDTO 사용
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User updatedUser = userService.updateUserProfile(userId, userDTO);
+        if (!userService.validatePassword(userId, userDTO.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+        }
         if(updatedUser != null) {
             return ResponseEntity.ok(new UpdateResponse("Profile updated successfully", updatedUser));
         } else {
@@ -48,7 +52,7 @@ public class UserController {
     }
 
     // 관심사 수정
-    @PostMapping("/update/{userId}/category")
+    @PutMapping("/update/{userId}/category")
 public ResponseEntity<?> updateUserCategory(@PathVariable int userId, @RequestBody ResisterDTO userDTO) { // ResisterDTO 사용
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

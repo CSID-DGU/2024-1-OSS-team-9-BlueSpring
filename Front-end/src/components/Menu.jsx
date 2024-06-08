@@ -41,29 +41,37 @@ const categories = [
         text: '전체보기',
     },
     {
-        name: 'business',
-        text: '비즈니스',
+        name: 'politics',
+        text: '정치',
+    },
+    {
+        name: 'economy',
+        text: '경제',
+    },
+    {
+        name: 'society',
+        text: '사회',
+    },
+    {
+        name: 'lifeculture',
+        text: '생활/문화',
+    },
+    {
+        name: 'world',
+        text: '세계',
+    },
+    {
+        name: 'itScience',
+        text: 'IT/과학',
     },
     {
         name: 'entertainment',
         text: '연예',
     },
     {
-        name: 'health',
-        text: '건강',
-    },
-    {
-        name: 'science',
-        text: '과학',
-    },
-    {
         name: 'sports',
         text: '스포츠',
     },
-    {
-        name: 'technology',
-        text: '기술',
-    }
 ];
 
 const CategoriesBlock = styled.div`
