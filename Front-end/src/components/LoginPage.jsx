@@ -28,6 +28,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const {userId, setUserId} = useAuth();
+  const {userPW, setUserPw} = useAuth();
+  const [userDepartment, setUserDepartment] = useAuth();
 
   const handleTabClick = (tab) => {
     setIsSignup(tab === 'signup');
@@ -56,6 +58,9 @@ const LoginPage = () => {
       localStorage.setItem('token', data);
       setIsLoggedIn(true);
       setUserId(id);
+      setUserPw(password);
+      const department = "db에서 학과 가져와야함"; //x에 DB에서 가져온 학과 값을 넣어야함.
+      setUserDepartment(department);
       navigate('/');
     } else {
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');

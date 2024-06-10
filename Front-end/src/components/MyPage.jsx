@@ -110,27 +110,27 @@ const MoreButton = styled.button`
 
 const MyPage = () => {
   const [selectedTab, setSelectedTab] = useState('profile');
-  const { userId } = useAuth();
-  //로그인 시 ID는 userID에 저장됨, DB에서 SQL문을 이용해 비밀번호, 학과, 관심사를 가져오고 useState에 넣으면 됨.
+  const { userId, userPw, userDepartment, setUserDepartment } = useAuth();
 
-  const [id, setId] = useState(userId);
-  const [password, setPassword] = useState('12345678'); // db에서 가져온 원래 password를 따옴표 사이에 넣는다.
-  const [inputpassword, setInputpassword] = useState('');
-  const [department, setDepartment] = useState('컴퓨터공학전공'); // db에서 가져온 원래 전공을 따옴표 사이에 넣는다.
-  const [inputdepartment, setInputdepartment] = useState(department);
-  //DB에서 가져온 아이디, 비번, 학과를 useState의 따옴표 사이에 삽입
+  const [inputPassword, setInputPassword] = useState('');
+  const [inputDepartment, setInputDepartment] = useState(userDepartment);
 
+  
   const handleEditProfile = () => {
-    if (inputpassword !== password) {
+    if (inputPassword !== userPw) {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
     //수정한 비밀번호가 일치하지 않으면 무시
 
-    console.log('아이디:', id);
-    console.log('비밀번호:', password);
-    console.log('학과:', department);
-    //수정하기 버튼 클릭 시 로직 추가
+    setUserDepartment(inputDepartment);
+    console.log('아이디:', userId);
+    console.log('비밀번호:', userPw);
+    console.log('학과:', userDepartment);
+
+    
+    alert('수정되었습니다.');
+    //수정하기 버튼 클릭 시 DB에 반영하는 로직 추가해야함
   };
 
   const recentArticles = [
@@ -182,9 +182,9 @@ const MyPage = () => {
           <Box>
             <h2 style={{ fontSize: '24px' }}>프로필</h2>
             <ProfileInfo>
-              <span><Label>아이디:</Label> {id}</span>
-              <span><Label>비밀번호:</Label> <Input type="password" onChange={(e) => setInputpassword(e.target.value)} /></span>
-              <span><Label>학과:</Label> <Input type="text" value={inputdepartment} onChange={(e) => setInputdepartment(e.target.value)} /></span>
+              <span><Label>아이디:</Label> {userId}</span>
+              <span><Label>비밀번호:</Label> <Input type="password" onChange={(e) => setInputPassword(e.target.value)} /></span>
+              <span><Label>학과:</Label> <Input type="text" value={inputDepartment} onChange={(e) => setInputDepartment(e.target.value)} /></span>
             </ProfileInfo>
             <EditButton onClick={handleEditProfile}>수정하기</EditButton>
           </Box>
