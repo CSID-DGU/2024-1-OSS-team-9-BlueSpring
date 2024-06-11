@@ -17,17 +17,12 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public Page<News> getRecommendedNews(Pageable pageable) {
         return newsRepository.findAll(pageable);
-        // 추천 알고리즘 적용
+        // 추천알고리즘 구현
     }
 
     @Override
     public Page<News> getNewsByCategory(String category, Pageable pageable) {
         return newsRepository.findByCategory(category, pageable);
-    }
-
-    @Override
-    public Page<News> searchNews(String keyword, Pageable pageable) {
-        return newsRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
     }
 
     @Override

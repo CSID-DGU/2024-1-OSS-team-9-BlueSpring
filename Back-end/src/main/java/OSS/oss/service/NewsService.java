@@ -7,6 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface NewsService {
     Page<News> getRecommendedNews(Pageable pageable);
     Page<News> getNewsByCategory(String category, Pageable pageable);
-    Page<News> searchNews(String keyword, Pageable pageable);
     News getNewsDetail(Long articleId);
 }

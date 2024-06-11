@@ -1,9 +1,8 @@
 package OSS.oss.entity;
-import com.mysql.cj.protocol.ColumnDefinition;
+
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-
 
 @Entity
 public class News {
@@ -12,7 +11,8 @@ public class News {
         // 기본 생성자
     }
 
-    public News(String category, String title, String content, String publishDate, String source, String media) {
+    public News(Long articleID, String category, String title, String content, String publishDate, String source, String media) {
+        this.articleID = articleID;
         this.category = category;
         this.title = title;
         this.content = content;
@@ -21,11 +21,44 @@ public class News {
         this.media = media;
     }
 
-    public Integer getArticleID() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long articleID;
+
+    @Column(length = 200, nullable = false)
+    private String title;
+
+    @Column
+    private String source;
+
+    @Column
+    private String media;
+
+    @Column
+    private String category;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @Column(columnDefinition = "TEXT")
+    private String summary;
+
+    @Column
+    private Integer totalLike;
+
+    @Column
+    private Integer totalDislike;
+
+    @Column
+    private LocalDate publishDate;
+
+    // Getter and Setter methods
+
+    public Long getArticleID() {
         return articleID;
     }
 
-    public void setArticleID(Integer articleID) {
+    public void setArticleID(Long articleID) {
         this.articleID = articleID;
     }
 
@@ -59,14 +92,6 @@ public class News {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getEmotionType() {
-        return emotionType;
-    }
-
-    public void setEmotionType(String emotionType) {
-        this.emotionType = emotionType;
     }
 
     public String getContent() {
@@ -108,39 +133,4 @@ public class News {
     public void setPublishDate(LocalDate publishDate) {
         this.publishDate = publishDate;
     }
-
-    @Id // primary key임을 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer articleID;
-
-    @Column(length = 200, nullable = false)
-    private String title;
-
-    @Column
-    private String source;
-
-    @Column
-    private String media;
-
-    @Column
-    private String category;
-
-    @Column
-    private String emotionType;
-
-    @Column(columnDefinition = "TEXT")
-    private String content;
-
-    @Column(columnDefinition = "TEXT")
-    private String summary;
-
-    @Column
-    private Integer totalLike;
-
-    @Column
-    private Integer totalDislike;
-
-    @Column
-    private LocalDate publishDate;
-
 }
