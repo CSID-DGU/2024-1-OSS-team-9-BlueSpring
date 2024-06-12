@@ -37,7 +37,7 @@ const RankingKeyword = styled.span`
 `;
 
 const RealTimeRanking = () => {
-  const keywords = ['코로나', '날씨', '뉴스', '영화', '음식', '여행', '스포츠', '연예', '게임', '쇼핑'];
+  const keywords = ['부안서 4.8 지진', '푸바오 공개', '영탁 막걸리 분쟁', '사단장 탄원서', '송승헌 플레이어2', '단일지도체제 유지 압축', '북한군', '이재명 기소 제3자뇌물', '엔비디아 주가 분할', '하마스 휴전안'];
 
   return (
     <RankingContainer>

@@ -13,7 +13,7 @@ const Mainheader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 50px;
+  padding: 0 20px; // 패딩을 좌우로 조금 줄입니다.
   top: 0;
   position: fixed;
 `;
@@ -27,6 +27,7 @@ const HeaderLeft = styled.div`
 const HeaderRight = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 10px; // 오른쪽 여백을 추가하여 내용이 잘리지 않도록 조정합니다.
 `;
 
 const SearchInput = styled.input`
@@ -47,10 +48,16 @@ const categories = [
   { name: 'technology', text: '기술' },
 ];
 
+// 미디어 쿼리를 사용하여 화면 크기가 작을 때 스타일을 조정합니다.
 const CategoriesBlock = styled.div`
   display: flex;
   padding: 1rem;
-  width: 1100px;
+  width: auto; // 너비를 자동으로 조정하게 설정합니다.
+  flex-wrap: wrap; // 필요시 내용을 다음 줄로 넘깁니다.
+
+  @media (max-width: 768px) {
+    justify-content: space-around; // 모바일 화면에서는 각 카테고리가 공간을 균등하게 차지하도록 합니다.
+  }
 `;
 
 const Category = styled.div`
@@ -83,15 +90,15 @@ const Category = styled.div`
 
 const UserButton = styled.div`
   font-size: 1rem;
+  padding: 8px 16px; // 버튼의 크기를 조금 더 크게 조정하여 클릭하기 쉽게 합니다.
   cursor: pointer;
-  white-space: pre;
+  white-space: nowrap; // 텍스트가 줄바꿈 되지 않도록 설정합니다.
   text-decoration: none;
   color: inherit;
-  padding-bottom: 0.25rem;
 
   &:hover {
     background-color: #495057;
-    transition: 0.2s linear;
+    transition: all 0.2s ease-in-out;
   }
 `;
 
