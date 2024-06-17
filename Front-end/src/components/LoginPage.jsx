@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -26,10 +26,7 @@ const HeaderLeft = styled.div`
 const LoginPage = () => {
   const [isSignup, setIsSignup] = useState(false);
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
-  const {userId, setUserId} = useAuth();
-  const {userPW, setUserPw} = useAuth();
-  const [userDepartment, setUserDepartment] = useAuth();
+  const { isLoggedIn, setIsLoggedIn, userId, setUserId, userPw, setUserPw, userDepartment, setUserDepartment } = useAuth();
 
   const handleTabClick = (tab) => {
     setIsSignup(tab === 'signup');
@@ -38,6 +35,12 @@ const LoginPage = () => {
   const handleTitleClick = () => {
     navigate('/');
   };
+
+  const fetchUserProfile = useCallback(async (userId) => {
+    const response = await fetch(`http://localhost:8080/api/users/mypage/${userId}`);
+    const data = await response.json();
+    return data;
+  }, []);
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
@@ -59,8 +62,9 @@ const LoginPage = () => {
       setIsLoggedIn(true);
       setUserId(id);
       setUserPw(password);
-      const department = "db에서 학과 가져와야함"; //x에 DB에서 가져온 학과 값을 넣어야함.
-      setUserDepartment(department);
+      const user = await fetchUserProfile(id);
+      setUserDepartment(user.major); // 사용자의 학과 정보를 상태 변수에 저장
+
       navigate('/');
     } else {
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');

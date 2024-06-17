@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import InterestSettings from './InterestSettings';
@@ -115,19 +115,87 @@ const MyPage = () => {
   const [inputPassword, setInputPassword] = useState('');
   const [inputDepartment, setInputDepartment] = useState(userDepartment);
 
-  
+  const [user, setUser] = useState(null);
+
+  const fetchUserProfile = useCallback(async (userId) => {
+    const response = await fetch(`http://localhost:8080/api/users/mypage/${userId}`);
+    const data = await response.json();
+    return data;
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await fetchUserProfile(userId);
+      setUser(user);
+      setUserDepartment(user.major);
+    };
+    fetchUser();
+  }, [userId, fetchUserProfile]);
+
+  /*(userId) => {
+return fetch(`http://localhost:8080/api/users/mypage/${userId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json(); // 파싱된 JSON 객체가 반환
+    })
+    .then(user => {
+      setUser(user);
+      setUserDepartment(user.major);
+    })
+    .catch(error => {
+      console.error('Error fetching user data:', error);
+    });
+    */
+
+
+  /* 컴포넌트가 마운트될 때 사용자 정보를 가져옴
+  useEffect(() => {
+    fetchUserProfile(userId);
+  }, [userId, fetchUserProfile]);
+*/
   const handleEditProfile = () => {
+    //수정한 비밀번호가 일치하지 않으면 무시
+    if (!user) {
+      alert('사용자 정보를 불러오는 데 실패했습니다.');
+      return;
+    }
     if (inputPassword !== userPw) {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
-    //수정한 비밀번호가 일치하지 않으면 무시
-
-    setUserDepartment(inputDepartment);
+    // 수정된 사용자 정보를 서버에 전송
+    fetch(`http://localhost:8080/api/users/mypage/update/${user.userId}/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        password: inputPassword,
+        major: inputDepartment,
+        // 기타 필요한 필드
+      }),
+    })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(updatedUser => {
+          // 서버에서 반환된 업데이트된 사용자 정보를 state에 저장
+          setUser(updatedUser);
+          setUserDepartment(inputDepartment);
+        })
+        .catch(error => {
+          console.error('Error updating user data:', error);
+        });
+    /*setUserDepartment(inputDepartment);
     console.log('아이디:', userId);
     console.log('비밀번호:', userPw);
     console.log('학과:', userDepartment);
-
+    */
     
     alert('수정되었습니다.');
     //수정하기 버튼 클릭 시 DB에 반영하는 로직 추가해야함

@@ -25,9 +25,9 @@ public class UserController {
     private JWTUtil jwtUtil;
 
     // 회원정보 조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserProfile(@PathVariable int userId) {
-        User user = userService.getUserProfile(userId);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserProfile(@PathVariable String id) {
+        User user = userService.getUserProfile(id);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {

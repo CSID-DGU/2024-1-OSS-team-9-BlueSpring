@@ -20,8 +20,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     // 회원정보 조회
-    public User getUserProfile(int userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public User getUserProfile(String id) {
+        Optional<User> userOptional = userRepository.findById(id);
         return userOptional.orElse(null);
     }
 
